@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import FormInput from "../form-imput/form-input.component";
 import Button from "../button/button.component";
@@ -9,6 +9,7 @@ import {
 } from "../../utils/firebase/firebase.utils";
 
 import "./sign-in-form.styles.scss";
+import { UserContext } from "../../contexts/user.context";
 
 const defaultFormObject = {
   email: "",
@@ -16,6 +17,7 @@ const defaultFormObject = {
 };
 
 const SignInForm = () => {
+  const { setCurrentUser } = useContext(UserContext);
   const [form, setForm] = useState(defaultFormObject);
   const { email, password } = form;
 
@@ -28,8 +30,8 @@ const SignInForm = () => {
     e.preventDefault();
 
     try {
-      const res = await signInWithEmailAndPwAuth(email, password);
-      console.log(res);
+      const { user } = await signInWithEmailAndPwAuth(email, password);
+      setCurrentUser(user);
     } catch (error) {
       switch (error.code) {
         case "auth/user-not-found":
