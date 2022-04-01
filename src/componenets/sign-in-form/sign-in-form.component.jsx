@@ -1,15 +1,13 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 import FormInput from "../form-imput/form-input.component";
 import Button from "../button/button.component";
 import {
   signInWithEmailAndPwAuth,
-  createUserDocumentFromAuth,
   signInWithGoogle,
 } from "../../utils/firebase/firebase.utils";
 
 import "./sign-in-form.styles.scss";
-import { UserContext } from "../../contexts/user.context";
 
 const defaultFormObject = {
   email: "",
@@ -17,7 +15,6 @@ const defaultFormObject = {
 };
 
 const SignInForm = () => {
-  const { setCurrentUser } = useContext(UserContext);
   const [form, setForm] = useState(defaultFormObject);
   const { email, password } = form;
 
@@ -30,8 +27,7 @@ const SignInForm = () => {
     e.preventDefault();
 
     try {
-      const { user } = await signInWithEmailAndPwAuth(email, password);
-      setCurrentUser(user);
+      await signInWithEmailAndPwAuth(email, password);
     } catch (error) {
       switch (error.code) {
         case "auth/user-not-found":
@@ -47,16 +43,14 @@ const SignInForm = () => {
   };
 
   const googleSignIn = async () => {
-    const { user } = await signInWithGoogle();
-    const userDocRef = await createUserDocumentFromAuth(user);
-    console.log(userDocRef);
+    await signInWithGoogle();
   };
 
   return (
     <div className="sign-in-container">
       <h2>I already have an account</h2>
       <span>Sign in with your email and password</span>
-      <form>
+      <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"
           required
@@ -77,7 +71,7 @@ const SignInForm = () => {
           <Button onSubmit={handleSubmit} type="submit">
             Sign in
           </Button>
-          <Button onSubmit={googleSignIn} buttonType="google">
+          <Button type="button" onClick={googleSignIn} buttonType="google">
             Google Sign in
           </Button>
         </div>
