@@ -6,15 +6,24 @@ import CartIcon from "../../componenets/cart-icon/cart-icon.component";
 import CartDropdown from "../../componenets/cart-dropdown/cart-dropdown.component";
 
 import { UserContext } from "../../contexts/user.context";
+import { ShoppingCartContext } from "../../contexts/shopping-cart.context";
+
 import { signOutAuth } from "../../utils/firebase/firebase.utils";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 
 const Navigation = () => {
   const { currentUser } = useContext(UserContext);
+  const { isOpen, setIsOpen } = useContext(ShoppingCartContext);
   const signOutHandler = async () => {
     await signOutAuth();
   };
   console.log(currentUser);
+
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+    console.log(isOpen);
+  };
+
   return (
     <>
       <div className="navigation">
@@ -35,9 +44,11 @@ const Navigation = () => {
               SIGN IN
             </Link>
           )}
-          <CartIcon />
+          <div onClick={handleOpen}>
+            <CartIcon />
+          </div>
         </div>
-        <CartDropdown></CartDropdown>
+        {isOpen && <CartDropdown />}
       </div>
       <Outlet />
     </>
