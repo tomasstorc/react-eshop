@@ -17,12 +17,6 @@ const Navigation = () => {
   const signOutHandler = async () => {
     await signOutAuth();
   };
-  console.log(currentUser);
-
-  const handleOpen = () => {
-    setIsOpen(!isOpen);
-    console.log(isOpen);
-  };
 
   return (
     <>
@@ -44,7 +38,11 @@ const Navigation = () => {
               SIGN IN
             </Link>
           )}
-          <div onClick={handleOpen}>
+          <div
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
             <CartIcon />
           </div>
         </div>
