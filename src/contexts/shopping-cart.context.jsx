@@ -17,12 +17,12 @@ export const ShoppingCartProvider = ({ children }) => {
       setCartItems(
         cartItems.map((cartItem) =>
           cartItem.id === item.id
-            ? { ...cartItem, quanity: cartItem.quanity + 1 }
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         )
       );
     } else {
-      setCartItems([...cartItems, { ...item, quanity: 1 }]);
+      setCartItems([...cartItems, { ...item, quantity: 1 }]);
     }
   };
 
