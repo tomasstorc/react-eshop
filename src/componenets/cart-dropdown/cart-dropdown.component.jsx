@@ -1,5 +1,6 @@
 import "./cart-dropdown.styles.scss";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { ShoppingCartContext } from "../../contexts/shopping-cart.context";
 
 import Button from "../button/button.component";
@@ -16,7 +17,9 @@ const CartDropdown = () => {
           <div className="center">No items</div>
         )}
       </div>
-      <Button buttonType="inverted">GO TO CHECKOUT</Button>
+      <Link to="/checkout">
+        <Button buttonType="inverted">GO TO CHECKOUT</Button>
+      </Link>
     </div>
   );
 };

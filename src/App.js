@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Navigation from "./pages/navigation/navigation.component";
 import Authentication from "./pages/authentication/authentication.component";
 import Shop from "./pages/shop/shop.component";
+import CartPage from "./pages/cart-page/cart-page.component";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="shop" element={<Shop />} />
           <Route path="auth" element={<Authentication />} />
+          <Route path="checkout" element={<CartPage />} />
         </Route>
       </Routes>
     </div>
