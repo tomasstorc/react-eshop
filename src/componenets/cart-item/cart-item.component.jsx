@@ -1,14 +1,14 @@
 import "./cart-item.styles.scss";
 
 const CartComponent = ({ cartItem }) => {
-  const { name, quanity, imageUrl, price } = cartItem;
+  const { name, quantity, imageUrl, price } = cartItem;
   return (
     <div className="cart-item-container">
       <img src={imageUrl} alt="item" />
       <div className="item-details">
         <span className="name">{name}</span>
         <span className="price">
-          {quanity} x ${price}
+          {quantity} x ${price}
         </span>
       </div>
     </div>

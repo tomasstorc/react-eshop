@@ -5,6 +5,7 @@ export const ShoppingCartContext = createContext({
   setIsOpen: () => {},
   cartItems: [],
   addItemToCart: () => {},
+  removeItemFromCart: () => {},
 });
 
 export const ShoppingCartProvider = ({ children }) => {
@@ -26,9 +27,29 @@ export const ShoppingCartProvider = ({ children }) => {
     }
   };
 
+  const removeItemFromCart = (item) => {
+    setCartItems(cartItems.filter((cartItem) => cartItem.id !== item.id));
+  };
+
+  const increaseQuantity = (item) => {
+    setCartItems(
+      cartItems.map((cartItem) => {
+        if (cartItem.id === item.id) {
+          return { ...cartItem, quantity: cartItem.quantity + 1 };
+        }
+        return cartItem;
+      })
+    );
+
   return (
     <ShoppingCartContext.Provider
-      value={{ isOpen, setIsOpen, cartItems, addItemToCart }}
+      value={{
+        isOpen,
+        setIsOpen,
+        cartItems,
+        addItemToCart,
+        removeItemFromCart,
+      }}
     >
       {children}
     </ShoppingCartContext.Provider>
