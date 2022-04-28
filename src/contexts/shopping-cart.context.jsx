@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const ShoppingCartContext = createContext({
   isOpen: false,
@@ -6,11 +6,23 @@ export const ShoppingCartContext = createContext({
   cartItems: [],
   addItemToCart: () => {},
   removeItemFromCart: () => {},
+  increaseQuantity: () => {},
+  decreaseQuantity: () => {},
+  total: null,
 });
 
 export const ShoppingCartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    setTotal(
+      cartItems.reduce((acc, item) => {
+        return acc + item.price * item.quantity;
+      }, 0)
+    );
+  }, [cartItems]);
 
   const addItemToCart = (item) => {
     const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
@@ -27,19 +39,41 @@ export const ShoppingCartProvider = ({ children }) => {
     }
   };
 
+  /**
+   *
+   * @param item item to remove from cart
+   * @returns Filtered cart items
+   */
   const removeItemFromCart = (item) => {
     setCartItems(cartItems.filter((cartItem) => cartItem.id !== item.id));
   };
 
   const increaseQuantity = (item) => {
     setCartItems(
-      cartItems.map((cartItem) => {
+      cartItems.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
+      )
+    );
+  };
+
+  const decreaseQuantity = (item) => {
+    setCartItems(
+      // neco jako flat white ale lepsi, lol
+      cartItems.flatMap((cartItem) => {
         if (cartItem.id === item.id) {
-          return { ...cartItem, quantity: cartItem.quantity + 1 };
+          if (cartItem.quantity === 1) {
+            return [];
+          } else {
+            return { ...cartItem, quantity: cartItem.quantity - 1 };
+          }
+        } else {
+          return cartItem;
         }
-        return cartItem;
       })
     );
+  };
 
   return (
     <ShoppingCartContext.Provider
@@ -49,6 +83,9 @@ export const ShoppingCartProvider = ({ children }) => {
         cartItems,
         addItemToCart,
         removeItemFromCart,
+        increaseQuantity,
+        decreaseQuantity,
+        total,
       }}
     >
       {children}

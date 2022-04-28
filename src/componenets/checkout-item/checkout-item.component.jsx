@@ -10,12 +10,22 @@ import "./checkout-item.styles.scss";
 
 const CheckoutItem = ({ item }) => {
   const { name, imageUrl, price, quantity } = item;
-  const { removeItemFromCart } = useContext(ShoppingCartContext);
+  const { removeItemFromCart, increaseQuantity, decreaseQuantity } =
+    useContext(ShoppingCartContext);
   return (
     <div>
+      <img src={imageUrl} alt="" />
       {name}
-      <ChevronLeftIcon className="quan" /> {quantity}{" "}
-      <ChevronRightIcon className="quan" /> x {price}
+      <ChevronLeftIcon
+        className="quan"
+        onClick={() => decreaseQuantity(item)}
+      />{" "}
+      {quantity}{" "}
+      <ChevronRightIcon
+        className="quan"
+        onClick={() => increaseQuantity(item)}
+      />{" "}
+      x {price}
       <ClearIcon className="icon" onClick={() => removeItemFromCart(item)} />
     </div>
   );
