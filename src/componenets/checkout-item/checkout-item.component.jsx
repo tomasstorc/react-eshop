@@ -1,9 +1,5 @@
 import { useContext } from "react";
 
-import ClearIcon from "@mui/icons-material/Clear";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-
 import { ShoppingCartContext } from "../../contexts/shopping-cart.context";
 
 import "./checkout-item.styles.scss";
@@ -13,20 +9,24 @@ const CheckoutItem = ({ item }) => {
   const { removeItemFromCart, increaseQuantity, decreaseQuantity } =
     useContext(ShoppingCartContext);
   return (
-    <div>
-      <img src={imageUrl} alt="" />
-      {name}
-      <ChevronLeftIcon
-        className="quan"
-        onClick={() => decreaseQuantity(item)}
-      />{" "}
-      {quantity}{" "}
-      <ChevronRightIcon
-        className="quan"
-        onClick={() => increaseQuantity(item)}
-      />{" "}
-      x {price}
-      <ClearIcon className="icon" onClick={() => removeItemFromCart(item)} />
+    <div className="checkout-item-container">
+      <div className="image-container">
+        <img src={imageUrl} alt="" />
+      </div>
+      <span className="name">{name}</span>
+      <span className="quantity">
+        <div onClick={() => decreaseQuantity(item)} className="arrow">
+          &#10094;
+        </div>
+        <span className="value">{quantity}</span>
+        <div onClick={() => increaseQuantity(item)} className="arrow">
+          &#10095;
+        </div>
+      </span>
+      <span className="price">{price}</span>
+      <div onClick={() => removeItemFromCart(item)} className="remove-button">
+        &#10005;
+      </div>
     </div>
   );
 };
