@@ -1,6 +1,11 @@
 import { useEffect, useState, createContext } from "react";
 
-import PRODUCT_DATA from "../shop-data.json";
+import {
+  addCollectionAndDocument,
+  getCategoriesAndDocuments,
+} from "../utils/firebase/firebase.utils";
+
+import SHOP_DATA from "../shop-data.js";
 export const ProductsContext = createContext({
   products: [],
   setProducts: () => null,
@@ -11,7 +16,11 @@ export const ProductsProvider = ({ children }) => {
   const value = { products, setProducts };
 
   useEffect(() => {
-    setProducts(PRODUCT_DATA);
+    const getCategoriesMap = async () => {
+      const categoryMap = await getCategoriesAndDocuments();
+      console.log(categoryMap);
+    };
+    getCategoriesMap();
   }, []);
   return (
     <ProductsContext.Provider value={value}>
